@@ -1,0 +1,9 @@
+{
+    "name": "POS System Dev Container",
+    "dockerFile": "Dockerfile",
+    "appPort": [8080, 4200],
+    "extensions": ["ms-azuretools.vscode-docker", "vscjava.vscode-spring-boot", "redhat.java", "angular.ng-template"],
+    "settings": {
+      "terminal.integrated.shell.linux": "/bin/bash"
+    }
+  }
