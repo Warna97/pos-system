@@ -1,15 +1,14 @@
-# Use the official maven image to build the Spring Boot backend
-FROM maven:3.8.4-openjdk-17 AS backend-build
+# Use the official Gradle image to build the Spring Boot backend
+FROM gradle:7.4.2-jdk17 AS backend-build
 
 # Set the working directory
 WORKDIR /workspace/backend
 
 # Copy the backend source code
-COPY backend/pom.xml backend/
-COPY backend/src backend/src
+COPY . .
 
 # Package the Spring Boot application
-RUN mvn clean package -DskipTests
+RUN gradle build --no-daemon
 
 # Use the official Node.js image to build the Angular frontend
 FROM node:18 AS frontend-build
@@ -36,7 +35,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /workspace
 
 # Copy the built backend and frontend applications
-COPY --from=backend-build /workspace/backend/target/*.jar app.jar
+COPY --from=backend-build /workspace/backend/build/libs/*.jar app.jar
 COPY --from=frontend-build /workspace/frontend/dist /workspace/frontend/dist
 
 # Expose ports for frontend and backend
